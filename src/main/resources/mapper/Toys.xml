@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.ToysDao"><!-- 与接口同个包-->
+
+    <resultMap id="toysMap" type="com.example.demo.entity.Toys">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="content" property="content"/>
+    </resultMap>
+    <!--id要与DAO的方法名一致 -->
+    <!--<select id="queryToys" resultMap="toysMap">
+        select id,name,price,content from toys order by id asc ;
+    </select>-->
+
+    <select id="queryToys" resultType="com.example.demo.entity.Toys">
+        select * from toys
+    </select>
+
+    <select id="queryById" resultMap="toysMap" parameterType="int">
+        select id,name,price,content from toys where id = #{id}
+    </select>
+
+    <insert id="insetToy" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.example.demo.entity.Toys">
+        insert into toys (id,name,price,content) values
+        (#{id},#{name},#{price},#{content})
+    </insert>
+
+    <update id="updateToy" parameterType="com.example.demo.entity.Toys">
+        update toys
+        <set>
+            <if test="name!=null">name = #{name},</if>
+            <if test="price!=null">price = #{price},</if>
+            <if test="content!=null">content = #{content},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delToy">
+        delete from toys where id = #{id}
+    </delete>
+
+</mapper>
